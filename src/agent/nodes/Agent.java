@@ -25,6 +25,7 @@ public class Agent {
     protected ArrayList usedQuadrants;
     protected int lastQuadrant;
     ArrayList<Integer> elements;
+    protected int lastQuantumRecived;
 
     public Agent(char id, int[][] matrix) {
         this.matrix = matrix;
@@ -42,6 +43,19 @@ public class Agent {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 System.out.printf("%d\t", matrix[i][j]);
+            }
+            System.out.println();
+        }
+    }
+    
+    public void printFinalMatrix() {
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (i == quadrant[0] && j == quadrant[1]) {
+                    System.out.printf("%d\t", matrix[i][j] - quantum +3);
+                } else {
+                    System.out.printf("%d\t", matrix[i][j]);
+                }
             }
             System.out.println();
         }
@@ -91,7 +105,7 @@ public class Agent {
                             }
                         }
                     }
-                    quantum = 0;
+                    quantum = 1;
                     System.out.printf("%c: Highest: %d, Second Best: %d\n", id, matrix[quadrant[0]][quadrant[1]], matrix[secondBest[0]][secondBest[1]]);
                 } else {
                     System.err.println("Out of quadrants");
@@ -139,6 +153,7 @@ public class Agent {
             if (!answer.isEmpty()) {
                 if (((int)answer.get(0) == quadrant[0]) && ((int)answer.get(1) == quadrant[1])) {
                     System.out.printf("%c: ACCEPT, Same quadrant achieved. [%d][%d]\n===================================\n",id,quadrant[0],quadrant[1]);
+                    
                     inGame = false;
                     return true;
                 } else {
@@ -152,6 +167,8 @@ public class Agent {
                     } else {
                         // NI POR PUTAS, deny
                         System.err.printf("%c: DENIED, Not working for %c. %d is not higer than %d\n ",id,id,matrix[(Integer)answer.get(0)][(Integer)answer.get(1)] + (Integer)answer.get(2),matrix[quadrant[0]][quadrant[1]]);
+                        lastQuantumRecived = (Integer)answer.get(2);
+                        System.out.printf("%c: Reciving %d as quantum\n\n",id,lastQuantumRecived);
                         inGame = true;
                         return false;
                     }
@@ -164,13 +181,4 @@ public class Agent {
             return false;
         }
     }
-
-    public String sendWarranty() {
-        return "Hola";
-    }
-
-    public void receiveWarranty() {
-
-    }
-
 }

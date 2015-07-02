@@ -72,6 +72,10 @@ public class AgentNegotiation {
                 }
             }
         }
+        System.out.println("Final P:");
+        p.printFinalMatrix();
+        System.out.println("Final Q:");
+        q.printFinalMatrix();
         System.exit(0);
     }
     
