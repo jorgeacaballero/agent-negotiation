@@ -43,6 +43,7 @@ public class AgentNegotiation {
         p.printMatrix();
         q.findBestQuadrant();
         q.printMatrix();
+        System.out.println("===================================");
         while(run){
             Thread.sleep(300);
             if (agent == 0) {

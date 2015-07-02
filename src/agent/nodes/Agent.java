@@ -32,7 +32,7 @@ public class Agent {
         this.quadrant = new int[2];
         this.secondBest = new int[2];
         this.inGame = true;
-        this.quantum = 0;
+        this.quantum = 1;
         this.usedQuadrants = new ArrayList();
         this.lastQuadrant = 2;
         this.elements = new ArrayList<>();
@@ -44,14 +44,6 @@ public class Agent {
                 System.out.printf("%d\t", matrix[i][j]);
             }
             System.out.println();
-        }
-    }
-    
-    protected void multiply(int factor){
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                matrix[i][j] *= factor;
-            }
         }
     }
     
@@ -102,7 +94,7 @@ public class Agent {
                     quantum = 0;
                     System.out.printf("%c: Highest: %d, Second Best: %d\n", id, matrix[quadrant[0]][quadrant[1]], matrix[secondBest[0]][secondBest[1]]);
                 } else {
-                    System.out.println("Out of quadrants");
+                    System.err.println("Out of quadrants");
                     System.exit(0);
                 }
             } 
@@ -119,13 +111,13 @@ public class Agent {
         //Check if quadrant-quantum is not less than any other quadrant
         System.out.printf(id+": Checking if matrix - quantum >= second best for %c\n", id);
         if (matrix[quadrant[0]][quadrant[1]] - quantum >= matrix[secondBest[0]][secondBest[1]]) {
-            System.out.printf("%c: true, creating proposal. Quantum in: ", id);
+            System.out.printf("%c: true (%d - %d = %d) >= (%d), creating proposal. Quantum in: ", id, matrix[quadrant[0]][quadrant[1]], quantum,matrix[quadrant[0]][quadrant[1]] - quantum, matrix[secondBest[0]][secondBest[1]]);
             //Esta bien, mandar prop
             retVal.add(quadrant[0]); //0
             retVal.add(quadrant[1]); //1
             retVal.add(quantum);     //2
-            quantum++;
             System.out.println(quantum);
+            quantum++;
             inGame = true;
         } else {
             System.out.printf("%c: false, moving quadrant\n", id);
@@ -146,17 +138,20 @@ public class Agent {
         try {
             if (!answer.isEmpty()) {
                 if (((int)answer.get(0) == quadrant[0]) && ((int)answer.get(1) == quadrant[1])) {
+                    System.out.printf("%c: ACCEPT, Same quadrant achieved. [%d][%d]\n===================================\n",id,quadrant[0],quadrant[1]);
                     inGame = false;
                     return true;
                 } else {
                     //Check proposal
                     //If Quantum + the proposed quadrant is > the secondHighest quadrant accept
                     if (matrix[(Integer)answer.get(0)][(Integer)answer.get(1)] + (Integer)answer.get(2) > matrix[quadrant[0]][quadrant[1]]) {
+                        System.out.printf("%c: ACCEPT with %d\n",id,matrix[(Integer)answer.get(0)][(Integer)answer.get(1)] + (Integer)answer.get(2));
                         // FUCK YEAH, aceptamos
                         inGame = false;
                         return true;
                     } else {
                         // NI POR PUTAS, deny
+                        System.err.printf("%c: DENIED, Not working for %c. %d is not higer than %d\n ",id,id,matrix[(Integer)answer.get(0)][(Integer)answer.get(1)] + (Integer)answer.get(2),matrix[quadrant[0]][quadrant[1]]);
                         inGame = true;
                         return false;
                     }
@@ -164,7 +159,6 @@ public class Agent {
             }
             
         } catch (Exception e) {
-            System.err.println("FUCK");
             e.printStackTrace();
         } finally {
             return false;
