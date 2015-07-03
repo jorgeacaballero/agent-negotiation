@@ -15,7 +15,7 @@ import java.util.Collections;
 public class Agent {
 
     public boolean inGame;
-    protected int[][] matrix;
+    public int[][] matrix;
     protected char id;
     protected int[] quadrant;
     protected int[] secondBest;
@@ -161,11 +161,9 @@ public class Agent {
                     //If Quantum + the proposed quadrant is > the secondHighest quadrant accept
                     if (matrix[(Integer)answer.get(0)][(Integer)answer.get(1)] + (Integer)answer.get(2) > matrix[quadrant[0]][quadrant[1]]) {
                         System.out.printf("%c: ACCEPT with %d\n",id,matrix[(Integer)answer.get(0)][(Integer)answer.get(1)] + (Integer)answer.get(2));
-                        // FUCK YEAH, aceptamos
                         inGame = false;
                         return true;
                     } else {
-                        // NI POR PUTAS, deny
                         System.err.printf("%c: DENIED, Not working for %c. %d is not higer than %d\n ",id,id,matrix[(Integer)answer.get(0)][(Integer)answer.get(1)] + (Integer)answer.get(2),matrix[quadrant[0]][quadrant[1]]);
                         lastQuantumRecived = (Integer)answer.get(2);
                         System.out.printf("%c: Reciving %d as quantum\n\n",id,lastQuantumRecived);
@@ -179,6 +177,27 @@ public class Agent {
             e.printStackTrace();
         } finally {
             return false;
+        }
+    }
+    
+    public void warranties(){
+        if (id == 'p') {
+            //Vertical
+            if (quadrant[1] == 0) {
+                int warranty = (matrix[quadrant[0]][0]- quantum +3)-matrix[0][quadrant[1]];
+                //System.out.println((matrix[quadrant[0]][0]- quantum +3) + " - " + matrix[0][quadrant[1]] + " = " + warranty);
+                System.out.println(id + ": Warranty asked is: "+ Math.abs(warranty));
+            } else {
+                int warranty = (matrix[0][quadrant[1]])-(matrix[1][quadrant[1]]- quantum +3);
+                //System.out.println((matrix[quadrant[0]][0]- quantum +3) + " - " + matrix[1][quadrant[1]] + " = " + warranty);
+                System.out.println(id + ": Warranty asked is: "+ Math.abs(warranty));
+            }
+            
+        } else {
+            //Horizontal
+            int warranty = (matrix[quadrant[0]][0]- quantum +3)-matrix[quadrant[0]][1];
+            //System.out.println((matrix[quadrant[0]][0]- quantum +3) + " - " + matrix[quadrant[0]][1] + " = " + warranty);
+            System.out.println(id + ": Warranty asked is: "+ Math.abs(warranty));
         }
     }
 }

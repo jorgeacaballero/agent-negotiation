@@ -31,7 +31,7 @@ public class AgentNegotiation {
         baseMatrixQ[0][1] = 20;
         baseMatrixQ[1][0] = 19;
         baseMatrixQ[1][1] = 10;
-        
+       
         Agent p;
         Agent q;
         p = new Agent('p', baseMatrixP);
@@ -74,8 +74,10 @@ public class AgentNegotiation {
         }
         System.out.println("Final P:");
         p.printFinalMatrix();
+        p.warranties();
         System.out.println("\nFinal Q:");
         q.printFinalMatrix();
+        q.warranties();
         System.exit(0);
     }
     
